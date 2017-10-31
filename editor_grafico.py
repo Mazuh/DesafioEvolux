@@ -17,14 +17,14 @@ class Image(object):
     __INIT_COMMAND_KEY = 'I'
     __AVAILABLE_CLI = {
         'I': r'^I (?P<M>[0-9]+) (?P<N>[0-9]+)$',
-        'C': r'^C .*$',
-        'L': r'^L .*$',
-        'V': r'^V .*$',
-        'H': r'^H .*$',
-        'K': r'^K .*$',
-        'F': r'^F .*$',
-        'S': r'^S .*$',
-        'X': r'^X .*$'
+        'C': r'^C$',
+        'L': r'^L (?P<X>[0-9]+) (?P<Y>[0-9]+) (?P<C>[A-Z])$',
+        'V': r'^V (?P<X>[0-9]+) (?P<Y1>[0-9]+) (?P<Y2>[0-9]+) (?P<C>[A-Z])$',
+        'H': r'^H (?P<X1>[0-9]+) (?P<X2>[0-9]+) (?P<Y>[0-9]+) (?P<C>[A-Z])$',
+        'K': r'^K (?P<X1>[0-9]+) (?P<Y1>[0-9]+) (?P<X2>[0-9]+) (?P<Y2>[0-9]+) (?P<C>[A-Z])$',
+        'F': r'^F (?P<X>[0-9]+) (?P<Y>[0-9]+) (?P<C>[A-Z])$',
+        'S': r'^S (?P<Name>.*)$',
+        'X': r'^X$'
     }
 
     def __init__(self, cols_qtt: int, rows_qtt: int):
@@ -77,7 +77,11 @@ class Image(object):
         if (cmd == Image.__INIT_COMMAND_KEY) or (cmd not in Image.__AVAILABLE_CLI):
             return False
 
-        # TODO later
+        args_match = re.match(Image.__AVAILABLE_CLI[cmd], line)
+        if args_match is None:
+            return False
+
+        # TODO if-else for decisions
 
         return True
 
@@ -100,7 +104,8 @@ class Image(object):
 def main():
     """TODO: implement main routines."""
     matrix = Image.init_by_cli(input())
-    print(matrix) # str?
+    while True:
+        matrix.cli_exec(input())
 
 
 if __name__ == '__main__':
