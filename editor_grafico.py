@@ -1,5 +1,5 @@
-# !/usr/bin/python3
-# -*- coding: utf8 -*-
+#!/usr/bin/python3
+#-*- coding: utf8 -*-
 """
 Program that reads a sequence of commands to handle a MxN matrix of pixels.
 """
@@ -47,7 +47,7 @@ class Image(object):
 
 def main():
     """TODO: implement main routines."""
-    pass
+    print('hello there!')
 
 if __name__ == '__main__':
     main()
