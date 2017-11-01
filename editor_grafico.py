@@ -84,7 +84,9 @@ class Image(object):
 
     def draw_rect(self, l_col: int, l_row: int, r_col: int, r_row: int, color: str):
         """Draw a rectangle from a upper left coordinate up to a right bottom coordinate."""
-        pass
+        for col_i in range(l_col, r_col+1):
+            for row_i in range(l_row, r_row+1):
+                self.set_color(col_i, row_i, color)
 
 
     def fill(self, ref_col: int, ref_row: int, new_color: str, _replaceable_color=None):
