@@ -15,6 +15,7 @@ class Image(object):
     _BLANK_COLOR = 'O'
 
     __INIT_COMMAND_KEY = 'I'
+    __EXIT_COMMAND_KEY = 'X'
     __AVAILABLE_CLI = {
         'I': r'^I (?P<M>[0-9]+) (?P<N>[0-9]+)$',
         'C': r'^C$',
@@ -179,7 +180,7 @@ class Image(object):
             self.save(
                 filename=argsm.group('Name')
             )
-        elif cmd == 'X':
+        elif cmd == Image.__EXIT_COMMAND_KEY:
             exit()
 
         return True
@@ -192,6 +193,10 @@ class Image(object):
         For other domain commands, use cli_exec non-static method.
         """
         line = raw_command_line.strip()
+
+        if line == Image.__EXIT_COMMAND_KEY:
+            exit()
+
         pattern = Image.__AVAILABLE_CLI[Image.__INIT_COMMAND_KEY]
 
         cmd = re.match(pattern, line)
@@ -214,8 +219,10 @@ class Image(object):
 
 def main():
     """Start and run CLI execution."""
-    matrix = Image.init_by_cli(input())
-    while isinstance(matrix, Image):
+    matrix = None
+    while not isinstance(matrix, Image):
+        matrix = Image.init_by_cli(input())
+    while True:
         matrix.cli_exec(input())
         print(matrix)
 
