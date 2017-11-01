@@ -5,7 +5,6 @@ Program that reads a sequence of commands to handle a MxN matrix of pixels.
 """
 
 import re
-from sys import exit
 
 class Image(object):
     """
@@ -28,37 +27,46 @@ class Image(object):
         'X': r'^X$'
     }
 
+
     def __init__(self, cols_qtt: int, rows_qtt: int):
         """Create a new matrix with blank pixels."""
         pass
+
 
     def clear(self):
         """Leave all pixels blank."""
         pass
 
+
     def set_color(self, col: int, row: int, color: str):
         """Update a single pixel value."""
         pass
+
 
     def draw_vertical(self, col: int, begining_row: int, ending_row: int, color: str):
         """Update an entire vertical line."""
         pass
 
+
     def draw_horizontal(self, row: int, begining_col: int, ending_col: int, color: str):
         """Update an entire horizontal line."""
         pass
+
 
     def draw_rect(self, l_col: int, l_row: int, r_col: int, r_row: int, color: str):
         """Draw a rectangle from a upper left coordinate up to a right bottom coordinate."""
         pass
 
+
     def fill(self, ref_col: int, ref_row: int, color: str):
         """Paint a whole homogeneous area starting by an initial reference coordinate."""
         pass
 
+
     def save(self, filename: str):
         """Save all matrix data on a given filename."""
         pass
+
 
     def cli_exec(self, raw_command_line: str):
         """Interpret a command line and, if it's valid, apply such command on this object.
@@ -86,36 +94,36 @@ class Image(object):
             self.clear()
         elif cmd == 'L':
             self.set_color(
-                col=argsm.group('X'),
-                row=argsm.group('Y'),
+                col=int(argsm.group('X')),
+                row=int(argsm.group('Y')),
                 color=argsm.group('C')
             )
         elif cmd == 'V':
             self.draw_vertical(
-                col=argsm.group('X'),
-                begining_row=argsm.group('Y1'),
-                ending_row=argsm.group('Y2'),
+                col=int(argsm.group('X')),
+                begining_row=int(argsm.group('Y1')),
+                ending_row=int(argsm.group('Y2')),
                 color=argsm.group('C')
             )
         elif cmd == 'H':
             self.draw_horizontal(
-                row=argsm.group('X1'),
-                begining_col=argsm.group('X2'),
-                ending_col=argsm.group('Y'),
+                row=int(argsm.group('X1')),
+                begining_col=int(argsm.group('X2')),
+                ending_col=int(argsm.group('Y')),
                 color=argsm.group('C')
             )
         elif cmd == 'K':
             self.draw_rect(
-                l_col=argsm.group('X1'),
-                l_row=argsm.group('Y1'),
-                r_col=argsm.group('X2'),
-                r_row=argsm.group('Y2'),
+                l_col=int(argsm.group('X1')),
+                l_row=int(argsm.group('Y1')),
+                r_col=int(argsm.group('X2')),
+                r_row=int(argsm.group('Y2')),
                 color=argsm.group('C')
             )
         elif cmd == 'F':
             self.fill(
-                ref_col=argsm.group('X'),
-                ref_row=argsm.group('Y'),
+                ref_col=int(argsm.group('X')),
+                ref_row=int(argsm.group('Y')),
                 color=argsm.group('C')
             )
         elif cmd == 'S':
@@ -126,6 +134,7 @@ class Image(object):
             exit(0)
 
         return True
+
 
     @staticmethod
     def init_by_cli(raw_command_line):
@@ -143,8 +152,9 @@ class Image(object):
         return Image(cmd.group('M'), cmd.group('N'))
 
 
+
 def main():
-    """TODO: implement main routines."""
+    """Start and run CLI execution."""
     matrix = Image.init_by_cli(input())
     while True:
         matrix.cli_exec(input())
