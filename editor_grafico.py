@@ -85,7 +85,8 @@ class Image(object):
 
     def save(self, filename: str):
         """Save all matrix data on a given filename."""
-        pass
+        with open(filename, 'w') as saving_file:
+            saving_file.write(str(self))
 
 
     def cli_exec(self, raw_command_line: str):
