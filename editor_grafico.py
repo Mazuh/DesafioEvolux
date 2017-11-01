@@ -10,7 +10,7 @@ class Image(object):
     """
     Matrix of pixels.
 
-    For public access, its indexes are from 1 up to its dimensions (inclusive ranges).
+    For public methods awareness, its indexes are from 1 up to its dimensions (inclusive ranges).
     """
     _BLANK_COLOR = 'O'
 
@@ -50,7 +50,7 @@ class Image(object):
     def get_color(self, col: int, row: int):
         """Return a pixel value from the user given coordinates.
 
-        Note that this is the recommended access mechanism for most methods public or not, cause
+        Note that this is the recommended access interface for most methods public or not, cause
         its parameters most be from 1 up to their limits (and NOT begining by 0)."""
         return self.__matrix[col-1][row-1]
 
@@ -58,19 +58,27 @@ class Image(object):
     def set_color(self, col: int, row: int, color: str):
         """Update a single pixel value at the user given coordinates.
 
-        Note that this is the recommended access mechanism for most methods public or not, cause
+        Note that this is the recommended access interface for most methods public or not, cause
         its parameters most be from 1 up to their limits (and NOT begining by 0)."""
         self.__matrix[col-1][row-1] = color
 
 
     def draw_vertical(self, col: int, begining_row: int, ending_row: int, color: str):
         """Update an entire vertical line."""
-        pass
+        if begining_row > ending_row:
+            begining_row, ending_row = ending_row, begining_row
+
+        for row_i in range(begining_row, ending_row+1):
+            self.set_color(col, row_i, color)
 
 
     def draw_horizontal(self, row: int, begining_col: int, ending_col: int, color: str):
         """Update an entire horizontal line."""
-        pass
+        if begining_col > ending_col:
+            begining_col, ending_col = ending_col, begining_col
+
+        for col_i in range(begining_col, ending_col+1):
+            self.set_color(col_i, row, color)
 
 
     def draw_rect(self, l_col: int, l_row: int, r_col: int, r_row: int, color: str):
@@ -128,9 +136,9 @@ class Image(object):
             )
         elif cmd == 'H':
             self.draw_horizontal(
-                row=int(argsm.group('X1')),
-                begining_col=int(argsm.group('X2')),
-                ending_col=int(argsm.group('Y')),
+                row=int(argsm.group('Y')),
+                begining_col=int(argsm.group('X1')),
+                ending_col=int(argsm.group('X2')),
                 color=argsm.group('C')
             )
         elif cmd == 'K':
