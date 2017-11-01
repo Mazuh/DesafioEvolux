@@ -10,7 +10,7 @@ class Image(object):
     """
     Matrix of pixels.
 
-    Its indexes are from 1 up to its dimensions (inclusive ranges).
+    For public access, its indexes are from 1 up to its dimensions (inclusive ranges).
     """
     _BLANK_COLOR = 'O'
 
@@ -42,12 +42,25 @@ class Image(object):
 
     def clear(self):
         """Leave all pixels blank."""
-        pass
+        for row_i in range(self.__rows_qtt):
+            for col_i in range(self.__cols_qtt):
+                self.__matrix[col_i][row_i] = Image._BLANK_COLOR
+
+
+    def get_color(self, col: int, row: int):
+        """Return a pixel value from the user given coordinates.
+
+        Note that this is the recommended access mechanism for most methods public or not, cause
+        its parameters most be from 1 up to their limits (and NOT begining by 0)."""
+        return self.__matrix[col-1][row-1]
 
 
     def set_color(self, col: int, row: int, color: str):
-        """Update a single pixel value."""
-        pass
+        """Update a single pixel value at the user given coordinates.
+
+        Note that this is the recommended access mechanism for most methods public or not, cause
+        its parameters most be from 1 up to their limits (and NOT begining by 0)."""
+        self.__matrix[col-1][row-1] = color
 
 
     def draw_vertical(self, col: int, begining_row: int, ending_row: int, color: str):
