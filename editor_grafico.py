@@ -86,9 +86,29 @@ class Image(object):
         pass
 
 
-    def fill(self, ref_col: int, ref_row: int, color: str):
+    def fill(self, ref_col: int, ref_row: int, new_color: str, _replaceable_color=None):
         """Paint a whole homogeneous area starting by an initial reference coordinate."""
-        pass
+
+        if ref_col < 1 or ref_col > self.__cols_qtt or ref_row < 1 or ref_row > self.__rows_qtt:
+            return
+
+        if _replaceable_color is None:
+            _replaceable_color = self.get_color(ref_col, ref_row)
+            self.set_color(ref_col, ref_row, new_color)
+        else:
+            if self.get_color(ref_col, ref_row) == _replaceable_color:
+                self.set_color(ref_col, ref_row, new_color)
+            else:
+                return
+
+        self.fill(ref_col+1, ref_row+1, new_color, _replaceable_color)
+        self.fill(ref_col+1, ref_row-1, new_color, _replaceable_color)
+        self.fill(ref_col+1, ref_row, new_color, _replaceable_color)
+        self.fill(ref_col-1, ref_row+1, new_color, _replaceable_color)
+        self.fill(ref_col-1, ref_row-1, new_color, _replaceable_color)
+        self.fill(ref_col-1, ref_row, new_color, _replaceable_color)
+        self.fill(ref_col, ref_row+1, new_color, _replaceable_color)
+        self.fill(ref_col, ref_row-1, new_color, _replaceable_color)
 
 
     def save(self, filename: str):
@@ -153,7 +173,7 @@ class Image(object):
             self.fill(
                 ref_col=int(argsm.group('X')),
                 ref_row=int(argsm.group('Y')),
-                color=argsm.group('C')
+                new_color=argsm.group('C')
             )
         elif cmd == 'S':
             self.save(
