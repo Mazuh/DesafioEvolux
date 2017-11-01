@@ -5,6 +5,7 @@ Program that reads a sequence of commands to handle a MxN matrix of pixels.
 """
 
 import re
+from sys import exit
 
 class Image(object):
     """
@@ -77,11 +78,52 @@ class Image(object):
         if (cmd == Image.__INIT_COMMAND_KEY) or (cmd not in Image.__AVAILABLE_CLI):
             return False
 
-        args_match = re.match(Image.__AVAILABLE_CLI[cmd], line)
-        if args_match is None:
+        argsm = re.match(Image.__AVAILABLE_CLI[cmd], line)
+        if argsm is None:
             return False
 
-        # TODO if-else for decisions
+        if cmd == 'C':
+            self.clear()
+        elif cmd == 'L':
+            self.set_color(
+                col=argsm.group('X'),
+                row=argsm.group('Y'),
+                color=argsm.group('C')
+            )
+        elif cmd == 'V':
+            self.draw_vertical(
+                col=argsm.group('X'),
+                begining_row=argsm.group('Y1'),
+                ending_row=argsm.group('Y2'),
+                color=argsm.group('C')
+            )
+        elif cmd == 'H':
+            self.draw_horizontal(
+                row=argsm.group('X1'),
+                begining_col=argsm.group('X2'),
+                ending_col=argsm.group('Y'),
+                color=argsm.group('C')
+            )
+        elif cmd == 'K':
+            self.draw_rect(
+                l_col=argsm.group('X1'),
+                l_row=argsm.group('Y1'),
+                r_col=argsm.group('X2'),
+                r_row=argsm.group('Y2'),
+                color=argsm.group('C')
+            )
+        elif cmd == 'F':
+            self.fill(
+                ref_col=argsm.group('X'),
+                ref_row=argsm.group('Y'),
+                color=argsm.group('C')
+            )
+        elif cmd == 'S':
+            self.save(
+                filename=argsm.group('Name')
+            )
+        elif cmd == 'X':
+            exit(0)
 
         return True
 
