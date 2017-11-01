@@ -30,7 +30,14 @@ class Image(object):
 
     def __init__(self, cols_qtt: int, rows_qtt: int):
         """Create a new matrix with blank pixels."""
-        pass
+        self.__matrix = list()
+        self.__cols_qtt = cols_qtt
+        self.__rows_qtt = rows_qtt
+
+        for col_i in range(cols_qtt):
+            self.__matrix.append(list())
+            for _ in range(rows_qtt):
+                self.__matrix[col_i].append(Image._BLANK_COLOR)
 
 
     def clear(self):
@@ -79,7 +86,7 @@ class Image(object):
         """
         line = raw_command_line.strip()
 
-        cmd_match = re.match(r'^(?P<cmd>[A-Z]) .*', line)
+        cmd_match = re.match(r'^(?P<cmd>[A-Z]).*', line)
         if cmd_match is None:
             return False
         cmd = cmd_match.group('cmd')
@@ -131,7 +138,7 @@ class Image(object):
                 filename=argsm.group('Name')
             )
         elif cmd == 'X':
-            exit(0)
+            exit()
 
         return True
 
@@ -149,15 +156,26 @@ class Image(object):
         if cmd is None:
             return False
 
-        return Image(cmd.group('M'), cmd.group('N'))
+        return Image(int(cmd.group('M')), int(cmd.group('N')))
 
+
+    def __str__(self):
+        drawing = ''
+
+        for row_i in range(self.__rows_qtt):
+            for col_i in range(self.__cols_qtt):
+                drawing += self.__matrix[col_i][row_i]
+            drawing += '\n'
+
+        return drawing
 
 
 def main():
     """Start and run CLI execution."""
     matrix = Image.init_by_cli(input())
-    while True:
+    while isinstance(matrix, Image):
         matrix.cli_exec(input())
+        print(matrix)
 
 
 if __name__ == '__main__':
